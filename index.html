@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>蛙蛙酱的个人主页</title>
+<title>个人主页</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
@@ -23,6 +23,9 @@
   .bio{font-size:15px;line-height:1.8;color:#555;font-weight:300;}
   .bio em{font-family:'DM Serif Display',serif;font-style:italic;color:#1a1a1a;}
   .card{background:#f7f7f5;border-radius:12px;padding:1rem 1.25rem;border:0.5px solid #e0e0e0;}
+  .card-label{font-size:11px;color:#aaa;letter-spacing:0.5px;margin-bottom:6px;text-transform:uppercase;}
+  .card-title{font-weight:500;font-size:15px;}
+  .card-sub{font-size:14px;color:#666;margin-top:2px;}
   .research-highlight{border-left:2px solid #93bbdd;padding-left:14px;margin-top:12px;}
   .research-highlight .rh-title{font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:4px;}
   .research-highlight .rh-desc{font-size:13px;color:#666;line-height:1.6;font-weight:300;}
@@ -30,130 +33,121 @@
   .achievement-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:#f7f7f5;border-radius:12px;border:0.5px solid #e0e0e0;}
   .achievement-icon{width:32px;height:32px;border-radius:8px;background:#fff;border:0.5px solid #e0e0e0;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .achievement-icon svg{width:16px;height:16px;color:#4a8fc1;}
+  .achievement-icon.star svg{color:#b8860b;}
   .achievement-body{flex:1;min-width:0;}
   .achievement-title{font-size:13px;font-weight:500;color:#1a1a1a;line-height:1.5;margin-bottom:3px;}
   .achievement-meta{font-size:12px;color:#aaa;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   .achievement-badge{font-size:11px;padding:2px 8px;border-radius:10px;background:#fff8e1;color:#9a6f00;border:0.5px solid #f0d070;font-weight:500;}
   .interest-grid{display:flex;flex-wrap:wrap;gap:8px;}
   .interest-item{display:flex;align-items:center;gap:6px;font-size:14px;color:#666;background:#f7f7f5;padding:6px 14px;border-radius:20px;border:0.5px solid #e0e0e0;}
-  .interest-item svg{width:14px;height:14px;flex-shrink:0;opacity:0.6;}
   .contact-row{display:flex;align-items:center;gap:8px;font-size:14px;color:#666;}
   .contact-row a{color:#4a8fc1;text-decoration:none;}
   .contact-row a:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
-<div class="page">
-  <div class="hero">
-    <div class="avatar">
-      <img src="avatar.png" alt="蛙蛙酱头像">
-    </div>
-    <div class="hero-text">
-      <h1>蛙蛙酱</h1>
-      <div class="subtitle">德语系 · 上海交通大学</div>
-      <div class="tag-row">
-        <span class="tag">呱呱呱</span>
-        <span class="tag">本科在读</span>
-        <span class="tag accent">努力科研中</span>
-      </div>
-    </div>
-  </div>
+<div class="page" id="app">加载中…</div>
 
-  <div class="section">
-    <h2>关于我</h2>
-    <p class="bio">欢迎来到蛙蛙主页！蛙就读于<em>东川路800号</em>。蛙平时喜欢钓鱼，虽然天天空军。蛙的研究方向蛙也说不太清楚，等想清楚了再说吧呱。有时候蛙会在深夜对着电脑暴躁，那大概是蛙在赶论文。欢迎一起呱呱呱。</p>
-  </div>
+<script>
+const CERT_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>`;
+const STAR_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>`;
+const EMAIL_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.5;flex-shrink:0"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>`;
 
-  <div class="divider"></div>
+function renderBio(text) {
+  return text.replace(/\{([^}]+)\}/g, '<em>$1</em>');
+}
 
-  <div class="section">
-    <h2>教育背景</h2>
-    <div class="card">
-      <div style="font-size:11px;color:#aaa;letter-spacing:0.5px;margin-bottom:6px;text-transform:uppercase;">本科</div>
-      <div style="font-weight:500;font-size:15px;">上海交通大学</div>
-      <div style="font-size:14px;color:#666;margin-top:2px;">德语系 · 在读</div>
-    </div>
-  </div>
+function render(d) {
+  const info = d['基本信息'];
+  const tags = info['标签'].map(t => `<span class="tag">${t}</span>`).join('');
+  const accentTag = info['标签_绿色'] ? `<span class="tag accent">${info['标签_绿色']}</span>` : '';
 
-  <div class="section">
-    <h2>研究兴趣</h2>
-    <div class="research-highlight">
-      <div class="rh-title">语言学</div>
-      <div class="rh-desc">关注语言结构、语义演变及跨语言对比分析，尤其对德语与汉语之间的语法差异与共通之处感兴趣。</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>科研成果</h2>
-    <div class="achievement-list">
+  const achievements = d['科研成果'].map(a => {
+    const isStar = !!a['徽章'];
+    const icon = isStar ? STAR_ICON : CERT_ICON;
+    const iconClass = isStar ? 'achievement-icon star' : 'achievement-icon';
+    const meta = [a['类型'], a['登记号'] ? `登记号 ${a['登记号']}` : '', a['日期']]
+      .filter(Boolean).map(s => `<span>${s}</span>`).join('');
+    const badge = a['徽章'] ? `<span class="achievement-badge">${a['徽章']}</span>` : '';
+    return `
       <div class="achievement-item">
-        <div class="achievement-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
-        </div>
+        <div class="${iconClass}">${icon}</div>
         <div class="achievement-body">
-          <div class="achievement-title">雨水花园碳排放全生命周期核算与可视化系统 V1.0</div>
-          <div class="achievement-meta">
-            <span>软件著作权</span>
-            <span>登记号 2026SR0244264</span>
-            <span>2026.02</span>
-          </div>
+          <div class="achievement-title">${a['名称']}</div>
+          <div class="achievement-meta">${meta}${badge}</div>
         </div>
-      </div>
-      <div class="achievement-item">
-        <div class="achievement-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
-        </div>
-        <div class="achievement-body">
-          <div class="achievement-title">海绵设施多路径碳减排效能分析与方案优化软件 V1.0</div>
-          <div class="achievement-meta">
-            <span>软件著作权</span>
-            <span>登记号 2026SR0244267</span>
-            <span>2026.02</span>
-          </div>
-        </div>
-      </div>
-      <div class="achievement-item">
-        <div class="achievement-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-        </div>
-        <div class="achievement-body">
-          <div class="achievement-title">上海交通大学第48期PRP项目</div>
-          <div class="achievement-meta">
-            <span>科研项目</span>
-            <span class="achievement-badge">优秀</span>
-          </div>
-        </div>
+      </div>`;
+  }).join('');
+
+  const hobbies = d['兴趣爱好'].map(h => `
+    <div class="interest-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;opacity:0.5"><circle cx="12" cy="12" r="4"/></svg>
+      ${h}
+    </div>`).join('');
+
+  document.getElementById('app').innerHTML = `
+    <div class="hero">
+      <div class="avatar"><img src="${info['头像']}" alt="${info['姓名']}头像"></div>
+      <div class="hero-text">
+        <h1>${info['姓名']}</h1>
+        <div class="subtitle">${info['副标题']}</div>
+        <div class="tag-row">${tags}${accentTag}</div>
       </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>兴趣爱好</h2>
-    <div class="interest-grid">
-      <div class="interest-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M4.5 9.5h15M4.5 14.5h15M12 4.5c-2.5 3-2.5 12 0 15M12 4.5c2.5 3 2.5 12 0 15"/></svg>
-        篮球
-      </div>
-      <div class="interest-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 17l4-8 4 4 4-6 4 10"/><path d="M3 20h18"/></svg>
-        垒球
-      </div>
-      <div class="interest-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21l6-6M9 3l2 6-4 2 6 2 2 6"/><path d="M21 3l-6 6"/></svg>
-        钓鱼
+    <div class="section">
+      <h2>关于我</h2>
+      <p class="bio">${renderBio(d['关于我']['正文'])}</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <h2>教育背景</h2>
+      <div class="card">
+        <div class="card-label">${d['教育背景']['学历']}</div>
+        <div class="card-title">${d['教育背景']['学校']}</div>
+        <div class="card-sub">${d['教育背景']['专业状态']}</div>
       </div>
     </div>
-  </div>
 
-  <div class="divider"></div>
-
-  <div class="section">
-    <h2>联系方式</h2>
-    <div class="contact-row">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.5;flex-shrink:0"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
-      <a href="mailto:yiiif1010@gmail.com">yiiif1010@gmail.com</a>
+    <div class="section">
+      <h2>研究兴趣</h2>
+      <div class="research-highlight">
+        <div class="rh-title">${d['研究兴趣']['方向']}</div>
+        <div class="rh-desc">${d['研究兴趣']['描述']}</div>
+      </div>
     </div>
-  </div>
-</div>
+
+    <div class="section">
+      <h2>科研成果</h2>
+      <div class="achievement-list">${achievements}</div>
+    </div>
+
+    <div class="section">
+      <h2>兴趣爱好</h2>
+      <div class="interest-grid">${hobbies}</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <h2>联系方式</h2>
+      <div class="contact-row">
+        ${EMAIL_ICON}
+        <a href="mailto:${d['联系方式']['邮箱']}">${d['联系方式']['邮箱']}</a>
+      </div>
+    </div>
+  `;
+  document.title = info['姓名'] + '的个人主页';
+}
+
+fetch('content.json')
+  .then(r => r.json())
+  .then(render)
+  .catch(() => {
+    document.getElementById('app').innerHTML = '<p style="color:#999;padding:2rem;">加载失败，请确认 content.json 和 index.html 在同一文件夹。</p>';
+  });
+</script>
 </body>
 </html>
